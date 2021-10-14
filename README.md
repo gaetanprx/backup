@@ -1,7 +1,17 @@
 # backup
-iscript backup python
+script backup python
+
 ## REQUIREMENTS
-This sript will run with python 3.7+. No third party library required.
+- This script will run with python 3.7+. No third party library required.
+- For development we used third party library.
+```
+python -m venv venv
+source venv/Scripts/activate
+pip install -r requirements_dev.txt
+```
+
+## LINTING TOOL
+We used Flake8 as linting tool for this project.
 
 ## EXAMPLE
 ```
