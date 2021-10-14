@@ -1,9 +1,8 @@
 #!/usr/bin/python
 
-import sys
 import argparse
-import os
 import datetime
+import os
 import shutil
 
 
@@ -59,17 +58,22 @@ def full_copy_files(
             print(f"directory {new_dest} has been created")
 
 
-def main(argv: list) -> None:
+def is_directory(path: str) -> bool:
+    return os.path.isdir(path)
+
+
+def main() -> None:
     # parser
     parser = get_argument_parser()
     args = parser.parse_args()
     check_exist(args.source)
+    if not is_directory(args.source):
+        raise Exception(f"Source '{args.source}' must be a directory")
     check_exist(args.destination, create_if_not_exist=True)
     full_path_backup = create_full_path_backup(args.destination)
     full_copy_files(args.source, full_path_backup)
-#    proceed_backup(args.source, full_path_backup)
 
 
 if __name__ == '__main__':
     # only if script is called directly
-    main(sys.argv[1:])
+    main()
