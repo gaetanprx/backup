@@ -62,6 +62,11 @@ def is_directory(path: str) -> bool:
     return os.path.isdir(path)
 
 
+def compression(src_path: str, dest_path: str):
+    new_archive = shutil.make_archive(src_path, 'tar', dest_path)
+    print(f"directory {new_archive} has been created")
+
+
 def main() -> None:
     # parser
     parser = get_argument_parser()
@@ -72,6 +77,7 @@ def main() -> None:
     check_exist(args.destination, create_if_not_exist=True)
     full_path_backup = create_full_path_backup(args.destination)
     full_copy_files(args.source, full_path_backup)
+    compression(full_path_backup, full_path_backup)
 
 
 if __name__ == '__main__':
