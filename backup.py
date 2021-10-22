@@ -67,6 +67,10 @@ def compression(src_path: str, dest_path: str):
     print(f"directory {new_archive} has been created")
 
 
+def del_directory(src_path):
+    shutil.rmtree(src_path)
+
+
 def main() -> None:
     # parser
     parser = get_argument_parser()
@@ -78,6 +82,7 @@ def main() -> None:
     full_path_backup = create_full_path_backup(args.destination)
     full_copy_files(args.source, full_path_backup)
     compression(full_path_backup, full_path_backup)
+    del_directory(full_path_backup)
 
 
 if __name__ == '__main__':
