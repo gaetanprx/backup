@@ -1,8 +1,12 @@
-## [v1.2.0](https://github.com/gaetanprx/backup/releases/tag/v1.1.0) (2021-10-16)
+## [v1.2.0](https://github.com/gaetanprx/backup/releases/tag/v1.3.0) (2021-10-22)
 
-- Addeed def compress to compress diectory in tar file
+- Added def del directory to delete the directory to serve to create the tar archive 
 
-## [v1.1.1](https://github.com/gaetanprx/backup/releases/tag/v1.1.0) (2021-10-15)
+## [v1.2.0](https://github.com/gaetanprx/backup/releases/tag/v1.2.0) (2021-10-16)
+
+- Added def compress to compress diectory in tar file
+
+## [v1.1.1](https://github.com/gaetanprx/backup/releases/tag/v1.1.1) (2021-10-15)
 
 - Patch def if is a directory
 
