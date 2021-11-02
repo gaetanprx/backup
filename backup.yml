@@ -1,0 +1,8 @@
+...
+backup :
+  source : c\temp
+  destination : c\backup
+
+restore :
+  source : c\backup
+  destination : c\temp

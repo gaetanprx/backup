@@ -4,17 +4,23 @@ import argparse
 import datetime
 import os
 import shutil
+import yaml
 
 
 def get_argument_parser():
     parser = argparse.ArgumentParser(description="Script to backup")
-    parser.add_argument("--source", help="directory to backup", required=True)
-    parser.add_argument(
-        "--destination",
-        help="directory where the backup will be created",
-        required=True
-    )
+    parser.add_argument("--config", help="config is in the yaml file", required=True)
     return parser
+
+
+# A function to read yaml file
+def read_yaml(yaml_file_path: str) -> dict:
+    wit open(yaml_file_path, 'r') as f:
+        try:
+            config = yaml.safe_load(f)
+            return config
+        except yaml.YAMLError as exc:
+            print(exc)
 
 
 def does_exist(path: str):
@@ -67,17 +73,26 @@ def compression(src_path: str, dest_path: str):
     print(f"directory {new_archive} has been created")
 
 
+def del_directory(src_path: str):
+    shutil.rmtree(src_path)
+
+
 def main() -> None:
     # parser
     parser = get_argument_parser()
     args = parser.parse_args()
-    check_exist(args.source)
-    if not is_directory(args.source):
-        raise Exception(f"Source '{args.source}' must be a directory")
-    check_exist(args.destination, create_if_not_exist=True)
-    full_path_backup = create_full_path_backup(args.destination)
-    full_copy_files(args.source, full_path_backup)
+    yaml_file_path = args.config
+    my_config = read_yaml(yaml_file_path)
+    backup_source = my_config['backup']['source']
+    backup_destination = my_config['backup']['destination']
+    check_exist(yaml_file_path)
+    if not is_directory(backup_source):
+        raise Exception(f"Source '{backup_source}' must be a directory")
+    check_exist(backup_destination, create_if_not_exist=True)
+    full_path_backup = create_full_path_backup(backup_destination)
+    full_copy_files(backup_source, full_path_backup)
     compression(full_path_backup, full_path_backup)
+    del_directory(full_path_backup)
 
 
 if __name__ == '__main__':
