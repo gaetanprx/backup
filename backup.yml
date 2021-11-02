@@ -1,0 +1,8 @@
+...
+backup :
+  source : home\user1\temp
+  destination : home\user1\backup
+
+restore :
+  source : home\user1\backup
+  destination : home\user1\temp
