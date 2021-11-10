@@ -1,8 +1,8 @@
 ...
 backup :
-  source : home\user1\temp
-  destination : home\user1\backup
+  source : home\user1\Bureau\testscript
+  destination : home\user1\Bureau\backup
 
 restore :
-  source : home\user1\backup
-  destination : home\user1\temp
+  source : home\user1\Bureau\backup
+  destination : home\user1\Bureau\testscript
