@@ -131,6 +131,7 @@ def main() -> None:
         compression(full_path_backup, full_path_backup)
         del_directory(full_path_backup)
     elif backup_choice == 'restore':
+        check_exist(restore_destination, create_if_not_exist=True)
         restore(restore_source, restore_destination)
         else:
             print('choose with backup or restore')

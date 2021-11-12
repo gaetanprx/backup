@@ -1,3 +1,7 @@
+## [v2.1.0](https://github.com/gaetanprx/backup/releases/tag/v2.1.0) (2021-11-09)
+
+- Added def restore backup
+
 ## [v2.0.0](https://github.com/gaetanprx/backup/releases/tag/v2.0.0) (2021-11-01)
 
 - Added yaml file to configure the backup script
