@@ -16,7 +16,7 @@ We used Flake8 as linting tool for this project.
 ## EXAMPLE
 ```
 python backup.py --help
-usage: backup.py [-h] --source SOURCE --choice backup or restore
+usage: backup.py [-h] --source PATH TO THE YAML FILE --choice BACKUP or RESTORE
 
 Script to backup
 
