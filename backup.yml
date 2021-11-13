@@ -1,8 +1,7 @@
-...
 backup :
   source : '/home/user1/test/file'
   destination : '/home/user1/test/backup'
 
 restore :
-  source : '/home/user1/test/backup'
-  destination : '/home/user1/test/file'
+  path_src : '/home/user1/test/backup'
+  path_dest : '/home/user1/test/file'

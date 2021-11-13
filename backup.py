@@ -117,8 +117,7 @@ def main() -> None:
     yaml_file_path = args.config
     backup_choice = args.choice
     check_exist(yaml_file_path)
-    my_config = read_yaml(yaml_file_path)
-    print(f'config yaml {my_config}')
+    my_config = read_yaml(yaml_file_path)    
     backup_source = my_config['backup']['source']
     backup_destination = my_config['backup']['destination']
     restore_source = my_config['restore']['path_src']
