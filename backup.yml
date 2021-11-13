@@ -1,8 +1,7 @@
-...
 backup :
-  source : '/home/user1/test/file'
-  destination : '/home/user1/test/backup'
+  source : '/tmp/test'
+  destination : '/tmp/backup'
 
 restore :
-  source : '/home/user1/test/backup'
-  destination : '/home/user1/test/file'
+  source : '/tmp/backup/2021-11-12-22-11-53.tar'
+  destination : '/tmp/restore'
