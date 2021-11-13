@@ -118,6 +118,7 @@ def main() -> None:
     backup_choice = args.choice
     check_exist(yaml_file_path)
     my_config = read_yaml(yaml_file_path)
+    print(f'config yaml {my_config}')
     backup_source = my_config['backup']['source']
     backup_destination = my_config['backup']['destination']
     restore_source = my_config['restore']['path_src']
@@ -133,8 +134,8 @@ def main() -> None:
     elif backup_choice == 'restore':
         check_exist(restore_destination, create_if_not_exist=True)
         restore(restore_source, restore_destination)
-        else:
-            print('choose with backup or restore')
+    else:
+        print('choose with backup or restore')
 
 if __name__ == '__main__':
     # only if script is called directly
