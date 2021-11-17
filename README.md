@@ -1,5 +1,8 @@
-# backup
-script backup python
+# backup or restore
+This is a script in langage python
+You can make a restore or a backup and you choice this when you run the script
+The script create folder backup or restore if not exist
+The configuration to run the script is in backup.yml file
 
 ## REQUIREMENTS
 - This script will run with python 3.7+
