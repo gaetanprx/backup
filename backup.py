@@ -154,14 +154,16 @@ def main() -> None:
     restore_source = my_config['restore']['source']
     restore_destination = my_config['restore']['destination']
     if backup_choice == 'backup':
-        if not is_directory(backup_source):
+        if not does_exist(backup_source):
+            raise Exception(f"Path '{backup_source}' don't exist")
+        elif not is_directory(backup_source):
             raise Exception(f"Source '{backup_source}' must be a directory")
         check_exist(backup_destination, create_if_not_exist=True)
         full_path_backup = create_full_path_backup(backup_destination)
         full_copy_files(backup_source, full_path_backup)
         compression(full_path_backup, full_path_backup)
         del_directory(full_path_backup)
-    elif backup_choice == 'restore':
+    else:
         check_exist(restore_destination, create_if_not_exist=True)
         restore(restore_source, restore_destination)
 
