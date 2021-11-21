@@ -55,3 +55,6 @@ the restore is done
 ls /tmp/restore/
 toto.txt
 ```
+
+# error management code
+Each error is managed by bloc try except with a personnal message for each error

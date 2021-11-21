@@ -1,0 +1,7 @@
+backup :
+  source : '/home/user1/test/toto.txt'
+  destination : '/home/user1/backup'
+
+restore :
+  source : '/home/user1/backup/2021-11-16-08-33-35.tar'
+  destination : '/home/user1/tmp/restore'
