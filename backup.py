@@ -155,7 +155,7 @@ def main() -> None:
     restore_destination = my_config['restore']['destination']
     if backup_choice == 'backup':
         if not does_exist(backup_source):
-            raise Exception(f"Path '{backup_source}' don't exist")            
+            raise Exception(f"Path '{backup_source}' don't exist")
         elif not is_directory(backup_source):
             raise Exception(f"Source '{backup_source}' must be a directory")
         check_exist(backup_destination, create_if_not_exist=True)
