@@ -1,3 +1,8 @@
+
+## [v2.1.0](https://github.com/gaetanprx/backup/releases/tag/v2.0.0) (2021-11-01)
+
+- Added date file function to select the old files backup
+
 <<<<<<< HEAD
 ## [v2.0.0](https://github.com/gaetanprx/backup/releases/tag/v2.0.0) (2021-11-01)
 
