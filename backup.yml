@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ...
 backup :
   source : c\temp
@@ -6,3 +7,12 @@ backup :
 restore :
   source : c\backup
   destination : c\temp
+=======
+backup :
+  source : '/home/user1/test'
+  destination : '/home/user1/backup'
+
+restore :
+  source : '/home/user1/backup/2021-11-24-18-00-11.tar'
+  destination : '/home/user1/tmp/restore'
+>>>>>>> 7dfe8ad5ac0429465ae622eccea3bacd316320be
