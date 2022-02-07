@@ -173,8 +173,14 @@ def main() -> None:
     my_config = read_yaml(yaml_file_path)
     backup_source = my_config['backup']['source']
     backup_destination = my_config['backup']['destination']
+    backup_host = my_config['backup']['host']
+    backup_username = my_config['backup']['username']
+    backup_password = my_config['backup']['password']
     restore_source = my_config['restore']['source']
     restore_destination = my_config['restore']['destination']
+    restore_host = my_config['restore']['host']
+    restore_username = my_config['restore']['username']
+    restore_password = my_config['restore']['password']
     if backup_choice == 'backup':
         if not does_exist(backup_source):
             raise Exception(f"Path '{backup_source}' don't exist")
