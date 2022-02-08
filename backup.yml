@@ -14,6 +14,7 @@ backup :
   host : '192.168.9.161'
   username : 'user1'
   password : 'Debian01'
+  port : '22'
 
 restore :
   source : '/home/user1/backup/2021-11-24-18-00-11.tar'
@@ -21,4 +22,5 @@ restore :
   host : '192.168.9.162'
   username : 'user1'
   password : 'Debian01'
+  port : '22'
 >>>>>>> 7dfe8ad5ac0429465ae622eccea3bacd316320be

@@ -7,6 +7,7 @@ import shutil
 import tarfile
 import yaml
 import time
+import paramiko
 
 
 def get_argument_parser():
@@ -163,6 +164,24 @@ def date_file(src_path):
             print('Le fichier' delete_file 'a été supprimé avec succès')
 
 
+def ssh_connect(host, username, password, port):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.conect(host, port, username, password)
+    stdin, stoud, stderr = ssh.exec_comand('df')
+    result = stdout.read()
+    ssh.close()
+    print(result.decode('utf-8'))
+
+
+def ssh_download(host, username, password, port, path_restore):
+    transport = paramiko.Transport(host, port)
+    transport.connect(username, password)
+    sftp = paramiko.SFTPClient.from_transport(transport)
+    sftp.get(path_restore)
+    transport.close()
+
+
 def main() -> None:
     # parser
     parser = get_argument_parser()
@@ -176,11 +195,13 @@ def main() -> None:
     backup_host = my_config['backup']['host']
     backup_username = my_config['backup']['username']
     backup_password = my_config['backup']['password']
+    backup_port = my_config['backup']['port']
     restore_source = my_config['restore']['source']
     restore_destination = my_config['restore']['destination']
     restore_host = my_config['restore']['host']
     restore_username = my_config['restore']['username']
     restore_password = my_config['restore']['password']
+    restore_port = my_config['restore']['port']
     if backup_choice == 'backup':
         if not does_exist(backup_source):
             raise Exception(f"Path '{backup_source}' don't exist")
@@ -194,6 +215,7 @@ def main() -> None:
         date_file(backup_destination)
     else:
         check_exist(restore_destination, create_if_not_exist=True)
+        ssh_download(restore_port, restore_username, restore_password, restore_port, restore_source)
         restore(restore_source, restore_destination)
 
 
