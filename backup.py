@@ -164,22 +164,24 @@ def date_file(src_path):
             print('Le fichier', delete_file, 'a été supprimé avec succès')
 
 
-def ssh_connect(host, username, password, port):
+def ssh_connect(host, username, password, port, file_backup, backup_destination):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.conect(host, port, username, password)
-    stdin, stoud, stderr = ssh.exec_comand('df')
+    stdin, stoud, stderr = ssh.exec_comand(scp file_backup username@host:backup_destination)
     result = stdout.read()
+    print(result)
     ssh.close()
-    print(result.decode('utf-8'))
 
 
-def ssh_download(host, username, password, port, path_restore):
-    transport = paramiko.Transport(host, port)
-    transport.connect(username, password)
-    sftp = paramiko.SFTPClient.from_transport(transport)
-    sftp.get(path_restore)
-    transport.close()
+def ssh_download(host, username, password, port, path_restore, file_restore):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(host, port, username, password)
+    stdin, stdout, stderr = ssh.exec_command(scp username@host:file_restore path_restore
+    result = stdout.read()
+    print(result)
+    ssh.close()
 
 
 def main() -> None:
@@ -210,12 +212,13 @@ def main() -> None:
         check_exist(backup_destination, create_if_not_exist=True)
         full_path_backup = create_full_path_backup(backup_destination)
         full_copy_files(backup_source, full_path_backup)
-        compression(full_path_backup, full_path_backup)
+        file_backup = compression(full_path_backup, full_path_backup)
         del_directory(full_path_backup)
         date_file(backup_destination)
+        ssh_connect(backup_host, backup_username, backup_password, backup_port, file_backup, backup_destination)
     else:
         check_exist(restore_destination, create_if_not_exist=True)
-        ssh_download(restore_port, restore_username, restore_password, restore_port, restore_source)
+        ssh_download(restore_port, restore_username, restore_password, restore_port, restore_destination, restore_source)
         restore(restore_source, restore_destination)
 
 
