@@ -161,7 +161,7 @@ def date_file(src_path):
             i = i+1
         else:
             os.remove(delete_file)
-            print('Le fichier' delete_file 'a été supprimé avec succès')
+            print('Le fichier', delete_file, 'a été supprimé avec succès')
 
 
 def ssh_connect(host, username, password, port):
