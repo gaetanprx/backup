@@ -1,0 +1,3 @@
+
+colorscheme "murphy"
+set number
