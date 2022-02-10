@@ -167,8 +167,8 @@ def date_file(src_path):
 def ssh_connect(host, username, password, port, file_backup, backup_destination):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.conect(host, port, username, password)
-    stdin, stdoud, stderr = ssh.exec_command('scp file_backup username@host:backup_destination')
+    ssh.connect(host, port, username, password)
+    stdin, stdout, stderr = ssh.exec_command('scp file_backup username@host:backup_destination')
     result = stdout.read()
     print(result)
     ssh.close()
