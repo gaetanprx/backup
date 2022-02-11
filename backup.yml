@@ -1,11 +1,14 @@
 backup :
-  source : /tmp/user
-  destination : /tmp/backup
-  host : xxx
-  username : xxx
-  password : xxx
+  source : /home/user1/test
+  destination : /home/user1
+  host : 192.168.9.161 
+  username : user1
+  password : Debian01
   port : 22
-  remote_destination : /tmp/
+  remote_destination : /home/user1
+  userdb : adminwp_p9
+  userpass : Debian01
+  database : FTP_P9
 
 restore :
   source : /home/user1/backup/2021-11-24-18-00-11.tar

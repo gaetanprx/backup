@@ -193,6 +193,13 @@ def get_file_via_ssh(ssh_connection: paramiko.SSHClient, remote_file: str):
 
 
 @log_me
+def save_db(db_name, mysql_user, mysql_password) -> str:
+    file_name = "dump_" + db_name + ".sql"
+    os.system("mysqldump -u " + mysql_user + " -p" + mysql_password + " " + db_name + " > " + file_name)
+    return file_name
+
+
+@log_me
 def main() -> None:
     # parser
     parser = get_argument_parser()
@@ -209,6 +216,9 @@ def main() -> None:
         backup_password = my_config["backup"]["password"]
         backup_port = my_config["backup"]["port"]
         remote_destination = my_config["backup"]["remote_destination"]
+        mysql_user = my_config["backup"]["userdb"]
+        mysql_password = my_config["backup"]["userpass"]
+        db_name = my_config["bakup"]["database"]
 
         if not does_exist(backup_source):
             raise Exception(f"Path '{backup_source}' doesn't exist")
@@ -221,6 +231,7 @@ def main() -> None:
         file_backup = compression(full_path_backup, full_path_backup)
         del_directory(full_path_backup)
         # date_file(backup_destination)
+        save_db(db_name, mysql_user, mysql_password
 
         ssh_connection = get_ssh_connection(
             backup_host, backup_username, backup_password, backup_port

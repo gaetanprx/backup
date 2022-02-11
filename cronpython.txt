@@ -1,0 +1,1 @@
+00 22 * * * python3 /home/user1/workspace/backup/backup.py --config /home/user1/workspace/backup/backup.yml --choice backup
