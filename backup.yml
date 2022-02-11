@@ -1,10 +1,11 @@
 backup :
-  source : /home/user1/test
-  destination : /home/user1/backup
-  host : 192.168.9.161
-  username : user1
-  password : Debian01
+  source : /tmp/user
+  destination : /tmp/backup
+  host : xxx
+  username : xxx
+  password : xxx
   port : 22
+  remote_destination : /tmp/
 
 restore :
   source : /home/user1/backup/2021-11-24-18-00-11.tar
