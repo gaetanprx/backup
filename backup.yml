@@ -1,6 +1,6 @@
 backup :
   source : /home/user1/test
-  destination : /home/user1
+  destination : /home/user1/testscript
   host : 192.168.9.161 
   username : user1
   password : Debian01
