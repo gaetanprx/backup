@@ -147,25 +147,9 @@ def restore(
 
 
 @log_me
-def date_file(src_path: str):
-    file_del = 1
-    i = 1
-    for item in os.listdir(src_path):
-        new_file = os.path.join(src_path, item)
-        modification = os.path.getmtime(new_file)
-        convert_time = time.localtime(modification)
-        format_time = time.strftime("%Y%m%d %H:%M:%S", convert_time)
-        if file_del == 1:
-            file_del = format_time
-            delete_file = new_file
-        elif file_del > format_time:
-            file_del = format_time
-            delete_file = new_file
-        if i <= 7:
-            i = i + 1
-        else:
-            os.remove(delete_file)
-            print(f"file {delete_file} has been deleted.")
+def del_old_backup(ssh_connection: paramiko.SSHClient, remote_destination: str):
+    ssh_connection.exec_command(find remote_destination -ctime +7 -exec rm {} \;)
+
 
 
 @log_me
@@ -231,13 +215,14 @@ def main() -> None:
         full_copy_files(backup_source, full_path_backup)
         file_backup = compression(full_path_backup, full_path_backup)
         del_directory(full_path_backup)
-        # date_file(backup_destination)
+        # del_old_backup(ssh_conection)
         database = save_db(db_name, mysql_user, mysql_password, backup_destination)
         print(database)
         ssh_connection = get_ssh_connection(
             backup_host, backup_username, backup_password, backup_port
         )
         put_file_via_ssh(ssh_connection, file_backup, remote_destination)
+
     else:
         restore_source = my_config["restore"]["source"]
         restore_destination = my_config["restore"]["destination"]
