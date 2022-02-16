@@ -11,13 +11,14 @@ backup :
   database : FTP_P9
 
 restore :
-  source : /home/user1/backup_test/2021-11-24-18-00-11.tar
-  destination : /home/user1/backup
-  host : 192.168.9.162
+  source : /home/user1/backup_test/2022-02-16-14-16-24.tar
+  local_destination : /home/user1/workspace/backup/2022-02-16-14-16-24.tar
+  destination : /var/www/html
+  host : 192.168.9.161
   username : user1
   password : Debian01
   port : 22
   userdb : adminwp_p9
   userpass : Debian01
   database : FTP_P9
-  database_file : /home/user1/backup/****/dump_FTP_P9.sql
+  database_file : /var/www/html/dump_FTP_P9.sql

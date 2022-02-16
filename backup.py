@@ -258,6 +258,7 @@ def main() -> None:
         mysql_password = my_config["restore"]["userpass"]
         db_file = my_config["restore"]["database_file"]
         db_name = my_config["backup"]["database"]
+        restore_local = my_config["restore"]["local_destination"]
 
         check_exist(restore_destination, create_if_not_exist=True)
 
@@ -265,6 +266,7 @@ def main() -> None:
             restore_host, restore_username, restore_password, restore_port
         )
         get_file_via_ssh(ssh_connection, restore_source)
+        restore(restore_local, restore_destination)
         restore_db(db_file, db_name, mysql_user, mysql_password)
 
 
