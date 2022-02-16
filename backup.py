@@ -148,8 +148,7 @@ def restore(
 
 @log_me
 def del_old_backup(ssh_connection: paramiko.SSHClient, remote_destination: str):
-    ssh_connection.exec_command(find remote_destination -ctime +7 -exec rm {} \;)
-
+    ssh_connection.exec_command("find" +  remote_destination + "-ctime +7" +  "-exec rm {} \;")
 
 
 @log_me
@@ -164,7 +163,7 @@ def get_ssh_connection(
 
 @log_me
 def put_file_via_ssh(
-    ssh_connection: paramiko.SSHClient, source_file: str, remote_destination: str
+        ssh_connection: paramiko.SSHClient, source_file: str, remote_destination: str
 ):
     SCPClient(ssh_connection.get_transport()).put(
         source_file, remote_path=remote_destination
@@ -179,9 +178,15 @@ def get_file_via_ssh(ssh_connection: paramiko.SSHClient, remote_file: str):
 @log_me
 def save_db(db_name, mysql_user, mysql_password, dir_file) -> str:
     file_name = "dump_" + db_name + ".sql"
-    os.system("mysqldump -u " + mysql_user + " -p" + mysql_password + " " + db_name + " > " + file_name)
+    os.system("mysqldump -u " + mysql_user + "-p" + mysql_password + " " + db_name + " > " + file_name)
     shutil.copy(file_name, dir_file)
     return file_name
+
+
+def restore_db(db_file, mysql_user, mysql_password, dir_file) -> str:
+    os.system("mysqldump -u " + mysql_user + "-p" + mysql_password + " < " + db_file)
+    shutil.copy(db_file, dir_file)
+    return db_file
 
 
 @log_me
@@ -212,16 +217,15 @@ def main() -> None:
 
         check_exist(backup_destination, create_if_not_exist=True)
         full_path_backup = create_full_path_backup(backup_destination)
+        save_db(db_name, mysql_user, mysql_password, full_path_backup)
         full_copy_files(backup_source, full_path_backup)
         file_backup = compression(full_path_backup, full_path_backup)
         del_directory(full_path_backup)
-        # del_old_backup(ssh_conection)
-        database = save_db(db_name, mysql_user, mysql_password, backup_destination)
-        print(database)
         ssh_connection = get_ssh_connection(
             backup_host, backup_username, backup_password, backup_port
         )
         put_file_via_ssh(ssh_connection, file_backup, remote_destination)
+        del_old_backup(ssh_connection, remote_destination)
 
     else:
         restore_source = my_config["restore"]["source"]
@@ -230,6 +234,9 @@ def main() -> None:
         restore_username = my_config["restore"]["username"]
         restore_password = my_config["restore"]["password"]
         restore_port = my_config["restore"]["port"]
+        mysql_user = my_config["restore"]["userdb"]
+        mysql_password = my_config["restore"]["userpass"]
+        db_file = my_config["restore"]["database_file"]
 
         check_exist(restore_destination, create_if_not_exist=True)
 
@@ -237,7 +244,7 @@ def main() -> None:
             restore_host, restore_username, restore_password, restore_port
         )
         get_file_via_ssh(ssh_connection, restore_source)
-        restore(restore_source, restore_destination)
+        restore_db(db_file, mysql_user, mysql_password, restore_destination)
 
 
 if __name__ == "__main__":
