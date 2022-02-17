@@ -149,7 +149,7 @@ def restore(
 @log_me
 def del_old_backup(ssh_connection: paramiko.SSHClient, remote_destination: str):
     ssh_connection.exec_command(
-        "find " + remote_destination + " -ctime +7 -exec rm {} \;"
+        "find " + remote_destination + " -mtime +7 -exec rm {} \;"
     )
 
 
@@ -197,9 +197,11 @@ def save_db(db_name, mysql_user, mysql_password, dir_file, sql_host) -> str:
 
 
 @log_me
-def restore_db(db_file, db_name, mysql_user, mysql_password) -> str:
+def restore_db(db_file, db_name, mysql_user, mysql_password, sql_host) -> str:
     os.system(
-        "mysql -u "
+        "mysql -h "
+        +sql_host
+        + " -u"
         + mysql_user
         + " -p"
         + mysql_password
@@ -259,6 +261,7 @@ def main() -> None:
         restore_port = my_config["restore"]["port"]
         mysql_user = my_config["restore"]["userdb"]
         mysql_password = my_config["restore"]["userpass"]
+        mysql_host = my_config["backup"]["host_db"]
         db_file = my_config["restore"]["database_file"]
         db_name = my_config["backup"]["database"]
         restore_local = my_config["restore"]["local_destination"]
@@ -270,7 +273,7 @@ def main() -> None:
         )
         get_file_via_ssh(ssh_connection, restore_source)
         restore(restore_local, restore_destination)
-        restore_db(db_file, db_name, mysql_user, mysql_password)
+        restore_db(db_file, db_name, mysql_user, mysql_password, mysql_host)
 
 
 if __name__ == "__main__":
