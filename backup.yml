@@ -1,7 +1,6 @@
 backup :
   source : /var/www/html
   destination : /home/user1/testscript
-  host_db : 192.168.9.162
   host : 192.168.9.161 
   username : user1
   password : Debian01
