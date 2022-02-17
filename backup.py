@@ -178,10 +178,12 @@ def get_file_via_ssh(ssh_connection: paramiko.SSHClient, remote_file: str):
 
 
 @log_me
-def save_db(db_name, mysql_user, mysql_password, dir_file) -> str:
+def save_db(db_name, mysql_user, mysql_password, dir_file, sql_host) -> str:
     file_name = "dump_" + db_name + ".sql"
     os.system(
-        "mysqldump -u "
+        "mysqldump -h "
+        + sql_host
+        + " -u"
         + mysql_user
         + " -p"
         + mysql_password
@@ -228,6 +230,7 @@ def main() -> None:
         remote_destination = my_config["backup"]["remote_destination"]
         mysql_user = my_config["backup"]["userdb"]
         mysql_password = my_config["backup"]["userpass"]
+        mysql_host = my_config["backup"]["host_db"]
         db_name = my_config["backup"]["database"]
 
         if not does_exist(backup_source):
@@ -237,7 +240,7 @@ def main() -> None:
 
         check_exist(backup_destination, create_if_not_exist=True)
         full_path_backup = create_full_path_backup(backup_destination)
-        save_db(db_name, mysql_user, mysql_password, full_path_backup)
+        save_db(db_name, mysql_user, mysql_password, full_path_backup, mysql_host)
         full_copy_files(backup_source, full_path_backup)
         file_backup = compression(full_path_backup, full_path_backup)
         del_directory(full_path_backup)
