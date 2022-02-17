@@ -12,7 +12,6 @@ backup :
 
 restore :
   source : /home/user1/backup_test/2022-02-17-10-31-51.tar
-  local_destination : /home/user1/workspace/backup/2022-02-17-10-31-51.tar
   destination : /var/www/html
   host : 192.168.9.161
   username : user1

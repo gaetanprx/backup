@@ -174,11 +174,15 @@ def put_file_via_ssh(
 
 @log_me
 def get_file_via_ssh(ssh_connection: paramiko.SSHClient, remote_file: str):
-    SCPClient(ssh_connection.get_transport()).get(remote_file)
+    path = SCPClient(ssh_connection.get_transport()).get(remote_file)
+    return path
 
 
 @log_me
 def save_db(db_name, mysql_user, mysql_password, dir_file) -> str:
+    directory = "database"
+    path = os.path.join(dir_file, directory)
+    os.mkdir(path)
     file_name = "dump_" + db_name + ".sql"
     os.system(
         "mysqldump -u"
@@ -190,7 +194,7 @@ def save_db(db_name, mysql_user, mysql_password, dir_file) -> str:
         + " > "
         + file_name
     )
-    shutil.copy(file_name, dir_file)
+    shutil.copy(file_name, path)
     return file_name
 
 
@@ -208,6 +212,13 @@ def restore_db(db_file, db_name, mysql_user, mysql_password) -> str:
     )
     return db_file
 
+
+@log_me
+def make_dir_wp(dest_path) -> str:
+    directory = "wp_install"
+    path = os.path.join(dest_path, directory)
+    os.mkdir(path)
+    return path
 
 @log_me
 def main() -> None:
@@ -238,7 +249,8 @@ def main() -> None:
         check_exist(backup_destination, create_if_not_exist=True)
         full_path_backup = create_full_path_backup(backup_destination)
         save_db(db_name, mysql_user, mysql_password, full_path_backup)
-        full_copy_files(backup_source, full_path_backup)
+        path_wp = make_dir_wp(full_path_backup)
+        full_copy_files(backup_source, path_wp)
         file_backup = compression(full_path_backup, full_path_backup)
         del_directory(full_path_backup)
         ssh_connection = get_ssh_connection(
@@ -258,15 +270,14 @@ def main() -> None:
         mysql_password = my_config["restore"]["userpass"]
         db_file = my_config["restore"]["database_file"]
         db_name = my_config["backup"]["database"]
-        restore_local = my_config["restore"]["local_destination"]
 
         check_exist(restore_destination, create_if_not_exist=True)
 
         ssh_connection = get_ssh_connection(
             restore_host, restore_username, restore_password, restore_port
         )
-        get_file_via_ssh(ssh_connection, restore_source)
-        restore(restore_local, restore_destination)
+        file_restore = get_file_via_ssh(ssh_connection, restore_source)
+        restore(file_restore, restore_destination)
         restore_db(db_file, db_name, mysql_user, mysql_password)
 
 
