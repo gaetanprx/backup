@@ -140,6 +140,7 @@ def restore(
     dest_path: str,
 ):
     # Restore the backup
+    print(src_path)
     try:
         directory = tarfile.open(src_path, "r")
     except Exception:
@@ -286,14 +287,17 @@ def main() -> None:
         mysql_password = my_config["restore"]["userpass"]
         db_file = my_config["restore"]["database_file"]
         db_name = my_config["backup"]["database"]
-
+        path_source = my_config["restore"]["wp_install"]
+        path_destination = my_config["backup"]["source"]
         check_exist(restore_destination, create_if_not_exist=True)
 
         ssh_connection = get_ssh_connection(
             restore_host, restore_username, restore_password, restore_port
         )
         file_restore = get_file_via_ssh(ssh_connection, restore_source)
+        print(file_restore)
         restore(file_restore, restore_destination)
+        full_copy_files(path_source, path_destination)
         restore_db(db_file, db_name, mysql_user, mysql_password)
 
 

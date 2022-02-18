@@ -11,8 +11,8 @@ backup :
   database : FTP_P9
 
 restore :
-  source : /home/user1/backup_test/2022-02-17-10-31-51.tar
-  destination : /var/www/html
+  source : /home/user1/backup_test/2022-02-17-22-13-00.tar
+  destination : /home/user1/restore
   host : 192.168.9.161
   username : user1
   password : Debian01
@@ -20,4 +20,5 @@ restore :
   userdb : adminwp_p9
   userpass : Debian01
   database : FTP_P9
-  database_file : /var/www/html/dump_FTP_P9.sql
+  database_file : /home/user1/restore/database/dump_FTP_P9.sql
+  wp_install : /home/user1/restore/wp_install
