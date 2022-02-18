@@ -6,7 +6,6 @@ import os
 import shutil
 import tarfile
 import yaml
-import time
 import paramiko
 from scp import SCPClient
 
@@ -15,7 +14,8 @@ def log_me(func):
     def inner(*args, **kwargs):
         if os.getenv("DEBUG") == "True":
             print(
-                f"[{datetime.datetime.now().isoformat()}]Called {func.__name__} with {args} and {kwargs}"
+                f"[{datetime.datetime.now().isoformat()}]"
+                f"Called {func.__name__} with {args} and {kwargs}"
             )
         return func(*args, **kwargs)
 
@@ -77,7 +77,9 @@ def create_full_path_backup(path: str) -> str:
 
 
 @log_me
-def full_copy_files(src_path: str, dest_path: str, symlinks=False, ignore=None):
+def full_copy_files(
+    src_path: str, dest_path: str, symlinks=False, ignore=None
+) -> None:
     # Copy each file from src dir to dest dir, include sub-directories.
     for item in os.listdir(src_path):
         file_path = os.path.join(src_path, item)
@@ -99,7 +101,8 @@ def full_copy_files(src_path: str, dest_path: str, symlinks=False, ignore=None):
                 print(f"directory {new_dest} has been created")
             except Exception as exc:
                 raise Exception(
-                    f"The directory {new_dest} has not been created" f" Error {exc}"
+                    f"The directory {new_dest} has not been created"
+                    f" Error {exc}"
                 )
 
 
@@ -115,7 +118,9 @@ def compression(src_path: str, dest_path: str) -> str:
         print(f"archive {new_archive} has been created")
         return new_archive
     except Exception as exc:
-        raise Exception(f"the archive file {new_archive} failed" f" Error {exc}")
+        raise Exception(
+            f"the archive file {new_archive} failed" f" Error {exc}"
+        )
 
 
 @log_me
@@ -124,7 +129,8 @@ def del_directory(src_path: str):
         shutil.rmtree(src_path)
     except Exception as exc:
         raise Exception(
-            f"Error to delete the temporary directory {src_path}" f" Error {exc}"
+            f"Error to delete the temporary directory {src_path}"
+            f" Error {exc}"
         )
 
 
@@ -147,9 +153,11 @@ def restore(
 
 
 @log_me
-def del_old_backup(ssh_connection: paramiko.SSHClient, remote_destination: str):
+def del_old_backup(
+    ssh_connection: paramiko.SSHClient, remote_destination: str
+) -> None:
     ssh_connection.exec_command(
-        "find " + remote_destination + " -mtime +7 -exec rm {} \;"
+        "find " + remote_destination + " -mtime +7 -exec rm {} \\;"
     )
 
 
@@ -165,7 +173,9 @@ def get_ssh_connection(
 
 @log_me
 def put_file_via_ssh(
-    ssh_connection: paramiko.SSHClient, source_file: str, remote_destination: str
+    ssh_connection: paramiko.SSHClient,
+    source_file: str,
+    remote_destination: str,
 ):
     SCPClient(ssh_connection.get_transport()).put(
         source_file, remote_path=remote_destination
@@ -173,9 +183,14 @@ def put_file_via_ssh(
 
 
 @log_me
-def get_file_via_ssh(ssh_connection: paramiko.SSHClient, remote_file: str):
-    path = SCPClient(ssh_connection.get_transport()).get(remote_file)
-    return path
+def get_file_via_ssh(
+    ssh_connection: paramiko.SSHClient, remote_file: str
+) -> str:
+    SCPClient(ssh_connection.get_transport()).get(remote_file)
+    file_retrieved = os.path.basename(remote_file)
+    if does_exist(file_retrieved):
+        return file_retrieved
+    raise Exception(f"Unable to get file {remote_file} from SSH server")
 
 
 @log_me
@@ -219,6 +234,7 @@ def make_dir_wp(dest_path) -> str:
     path = os.path.join(dest_path, directory)
     os.mkdir(path)
     return path
+
 
 @log_me
 def main() -> None:
