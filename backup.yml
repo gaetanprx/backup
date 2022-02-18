@@ -11,13 +11,8 @@ backup :
   database : FTP_P9
 
 restore :
-<<<<<<< HEAD
   source : /home/user1/backup_test/2022-02-18-17-32-40.tar
   destination : /tmp/wp_install
-=======
-  source : /home/user1/backup_test/2022-02-17-22-13-00.tar
-  destination : /home/user1/restore
->>>>>>> ea370a928cc0aca93ee6d0cc4c0f9cb33bfe646b
   host : 192.168.9.161
   username : user1
   password : Debian01
@@ -25,9 +20,5 @@ restore :
   userdb : adminwp_p9
   userpass : Debian01
   database : FTP_P9
-<<<<<<< HEAD
   database_file : /tmp/wp_install/database/dump_FTP_P9.sql
-=======
-  database_file : /home/user1/restore/database/dump_FTP_P9.sql
-  wp_install : /home/user1/restore/wp_install
->>>>>>> ea370a928cc0aca93ee6d0cc4c0f9cb33bfe646b
+
