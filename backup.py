@@ -287,7 +287,6 @@ def main() -> None:
         mysql_password = my_config["restore"]["userpass"]
         db_file = my_config["restore"]["database_file"]
         db_name = my_config["backup"]["database"]
-        path_source = my_config["restore"]["wp_install"]
         path_destination = my_config["backup"]["source"]
         check_exist(restore_destination, create_if_not_exist=True)
 
@@ -297,8 +296,9 @@ def main() -> None:
         file_restore = get_file_via_ssh(ssh_connection, restore_source)
         print(file_restore)
         restore(file_restore, restore_destination)
-        full_copy_files(path_source, path_destination)
+        full_copy_files(restore_destination, path_destination)
         restore_db(db_file, db_name, mysql_user, mysql_password)
+        del_directory(restore_destination)
 
 
 if __name__ == "__main__":
