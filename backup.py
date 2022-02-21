@@ -238,6 +238,11 @@ def make_dir_wp(dest_path) -> str:
 
 
 @log_me
+def user_property(path, user, group) -> str:
+    os.system('chown -R ' + user + '.' + group + ' ' + path + '*')
+
+
+@log_me
 def main() -> None:
     # parser
     parser = get_argument_parser()
@@ -289,6 +294,8 @@ def main() -> None:
         db_name = my_config["backup"]["database"]
         path_destination = my_config["backup"]["source"]
         path_wp_install = my_config["restore"]["tmp_wp_install"]
+        user = my_config["restore"]["user"]
+        group = my_config["restore"]["group"]
         check_exist(restore_destination, create_if_not_exist=True)
         ssh_connection = get_ssh_connection(
             restore_host, restore_username, restore_password, restore_port
@@ -296,6 +303,7 @@ def main() -> None:
         file_restore = get_file_via_ssh(ssh_connection, restore_source)
         restore(file_restore, restore_destination)
         full_copy_files(path_wp_install, path_destination)
+        user_property(path_destination, user, group)
         restore_db(db_file, db_name, mysql_user, mysql_password)
         del_directory(restore_destination)
 
