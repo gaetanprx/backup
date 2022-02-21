@@ -21,4 +21,4 @@ restore :
   userpass : Debian01
   database : FTP_P9
   database_file : /tmp/wp_install/database/dump_FTP_P9.sql
-
+  tmp_wp_install : /tmp/wp_install/wp_install
