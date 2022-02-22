@@ -1,1 +1,0 @@
-30 3 * * * /usr/bin/python3  && DEBUG=True python3 /home/user1/workspace/backup/backup.py --config /home/user1/workspace/backup/backup.yml --choice backup >> /home/user1/workspace/backup/cron.log 2>> /home/user1/workspace/backup/cron.err
