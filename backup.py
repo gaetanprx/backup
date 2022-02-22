@@ -158,7 +158,7 @@ def del_old_backup(
     ssh_connection: paramiko.SSHClient, remote_destination: str
 ) -> None:
     ssh_connection.exec_command(
-        "find " + remote_destination + " -mtime +7 -exec rm {} \\;"
+        "find " + remote_destination + " -mtime +5 -exec rm {} \\;"
     )
 
 
